@@ -1,5 +1,5 @@
 """
-A server-based method for image segmentation results with the Tensormask model. 
+A server-based method for receiving image segmentation outputs from the Tensormask model. 
 """
 
 import click
