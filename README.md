@@ -47,7 +47,7 @@ Activate the server directly from the command line with
 
 This command starts the server and load the model so that it's ready to go when called upon.
 
-The pretrained and finetuned TensorMask model can be downloaded from this [Google drive folder]()
+The pretrained and finetuned TensorMask model can be downloaded from this [Google drive folder](https://drive.google.com/drive/folders/1s4xvls62Z8uPAXW2jUu96Q2w1OinyEy6?usp=sharing)
 
 You can provide additional arguments such as the hostname, port, and a cuda flag.
 
