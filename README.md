@@ -75,7 +75,7 @@ The prediction masks are stored in a dictionary with the key "pred_masks".  They
 
 ### Running on a remote server
 
-If you want to run int-grads-server on a remote server, you can specify the hostname to be 0.0.0.0 from the command line.  Then use the `hostname` command to find out which IP address the server is running on.
+If you want to run tensormask-server on a remote server, you can specify the hostname to be 0.0.0.0 from the command line.  Then use the `hostname` command to find out which IP address the server is running on.
 
        tensormask-server -tb /path/to/tensormask.pkl -cp /path/to/config.yaml -h 0.0.0.0 -p 8008
        hostname -I
