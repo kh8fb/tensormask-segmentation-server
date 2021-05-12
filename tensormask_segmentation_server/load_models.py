@@ -2,16 +2,12 @@
 Interface for loading the supported image segmentation models.
 """
 
-import cv2
+
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.modeling import build_model
-import numpy as np
-from PIL import Image
 import tensormask
 from tensormask import add_tensormask_config
-import torch
-import torchvision.transforms as transforms
 
 
 def load_tensormask_model(model_path, cfg_path, device):

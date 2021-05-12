@@ -2,12 +2,7 @@
 Run the model and get the pred_mask outputs.
 """
 
-from captum.attr import IntegratedGradients
-import logging
-from PIL import Image
 import torch
-
-from intermediate_gradients.intermediate_gradients import IntermediateGradients
 
 
 def prepare_input(img_array, device):
