@@ -61,7 +61,7 @@ def load_models(device, tensormask_path, cfg_path):
         Current keys are 'model_name', 'model'.
     """
     if tensormask_path is not None:
-        tensormask_model = load_bit_model(str(tensormask_path), str(cfg_path), device)
+        tensormask_model = load_tensormask_model(str(tensormask_path), str(cfg_path), device)
         return {"model_name": "tensormask", "model": tensormask_model}
     # add additional models here
     else:
