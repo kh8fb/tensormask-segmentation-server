@@ -18,7 +18,7 @@ Next, activate the environment, and `conda install` torch, torchvision, and cuda
 
 #### Installing Detectron and TensorMask
 
-Make sure that the path to cuda is available and set the `$CUDA_HOME` environmental variable. On some HPC servers this involves `module load gcccuda` and running `which nvcc` to obtain and set the `$CUDA_HOME` variable.;
+Make sure that the path to cuda is available and set the `$CUDA_HOME` environmental variable. On some HPC servers this involves `module load gcccuda` and running `which nvcc` to obtain and set the `$CUDA_HOME` variable. **This server requires CUDA access to run**
 
       export CUDA_HOME=/path/to/cuda-11.x.x
 
@@ -41,14 +41,10 @@ Now your environment is set up and you're ready to go.
 ### Usage
 Activate the server directly from the command line with
 
-	 intgrads-images -bp /path/to/bit_model.pth --cpu
-
-OR
-
-	intgrads-images -lb /path/to/lanet_model.pth --cuda
+	 tensormask-server -tp /path/to/tensormask_model.pkl -cp /path/to/config_file.yaml
 
 This command starts the server and load the model so that it's ready to go when called upon.
-The pretrained and finetuned BiT and LaNet models can be downloaded from this [Google drive folder](https://drive.google.com/drive/u/0/folders/1KtuVv2GPtbcuy9fifuCXySuqQhcPc-nO)
+The pretrained and finetuned TensorMask model can be downloaded from this [Google drive folder]()
 
 You can provide additional arguments such as the hostname, port, and a cuda flag.
 
@@ -58,9 +54,9 @@ After the software has been started, run `curl` with the "model" filepath to get
 
 #### Preparing Inputs for the Server
 
-The input_json_file.json can be produced from an image with the script `prepare_input.py`. This will store the image as a JSON file of RGB values and the image can thus be passed to the server. `prepare_input.py` also takes in the classification of the image which gradients are taken in respect to.  This classification is one of ‘airplane’, ‘automobile’, ‘bird’, ‘cat’, ‘deer’, ‘dog’, ‘frog’, ‘horse’, ‘ship’, or ‘truck'.
+The `input_json_file.json` can be produced from an image with the script `prepare_input.py`. This will store the image as a JSON file of RGB values and the image can thus be passed to the server.
 
-    python prepare_input.py /path/to/image.jpeg airplane input_json_file.json
+    python prepare_input.py /path/to/image.jpeg input_json_file.json
 
 ### Interpreting Server Outputs
 
@@ -77,10 +73,40 @@ The gradients are stored in a dictionary with the keys "integrated_grads", "inte
 ### Running on a remote server
 If you want to run int-grads-server on a remote server, you can specify the hostname to be 0.0.0.0 from the command line.  Then use the `hostname` command to find out which IP address the server is running on.
 
-       intgrads -lb /path/to/lanet.pth -h 0.0.0.0 -p 8008 --cuda
+       tensormask-server -tb /path/to/tensormask.pkl -h 0.0.0.0 -p 8008
        hostname -I
        10.123.45.110 10.222.222.345 10.333.345.678
 
 The first hostname result tells you which address to use in your `curl` request.
 
       curl http://10.123.45.110:8008/model/ --data @input_json_file.json --output saved_file.gzip -H "Content-Type:application/json; chartset=utf-8"
+
+
+### Model Results
+This trained TensorMask model received the following results
+
+| Dataset |   AP   |  AP50  |   APs  |   APm  |   APl  |
+|---------|:------:|:------:|:------:|:------:|:------:|
+|  Score  | 41.420 | 60.702 | 44.722 | 25.001 | 53.995 |
+
+
+### Citations
+
+```
+@InProceedings{chen2019tensormask,
+  title={Tensormask: A Foundation for Dense Object Segmentation},
+  author={Chen, Xinlei and Girshick, Ross and He, Kaiming and Doll{\'a}r, Piotr},
+  journal={The International Conference on Computer Vision (ICCV)},
+  year={2019}
+}
+```
+
+```BibTeX
+@misc{wu2019detectron2,
+  author =       {Yuxin Wu and Alexander Kirillov and Francisco Massa and
+                  Wan-Yen Lo and Ross Girshick},
+  title =        {Detectron2},
+  howpublished = {\url{https://github.com/facebookresearch/detectron2}},
+  year =         {2019}
+}
+```
