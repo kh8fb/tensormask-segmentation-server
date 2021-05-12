@@ -1,5 +1,5 @@
 """
-IntGrad's command line interface.
+tensormask-server's command line interface.
 """
 
 import logbook
@@ -16,4 +16,4 @@ if __name__ == "__main__":
     else:
         logbook.StderrHandler(logbook.INFO).push_application()
     logbook.compat.redirect_logging()
-    cli_main(prog_name="intgrads-images")
+    cli_main(prog_name="tensormask-server")
