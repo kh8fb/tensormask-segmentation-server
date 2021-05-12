@@ -4,6 +4,7 @@ Script for converting an input image into JSON.
 
 import cv2
 import json
+import torch
 import sys
 
 def convert_img_to_json(img_path, save_path):
