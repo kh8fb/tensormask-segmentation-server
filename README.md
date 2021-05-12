@@ -73,7 +73,7 @@ The gradients are stored in a dictionary with the keys "integrated_grads", "inte
 ### Running on a remote server
 If you want to run int-grads-server on a remote server, you can specify the hostname to be 0.0.0.0 from the command line.  Then use the `hostname` command to find out which IP address the server is running on.
 
-       tensormask-server -tb /path/to/tensormask.pkl -h 0.0.0.0 -p 8008
+       tensormask-server -tb /path/to/tensormask.pkl -cp /path/to/config.yaml -h 0.0.0.0 -p 8008
        hostname -I
        10.123.45.110 10.222.222.345 10.333.345.678
 
