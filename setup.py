@@ -13,5 +13,6 @@ setup(
         "click_completion",
         "logbook",
         "flask",
+        "opencv-python",
     ],
 )
