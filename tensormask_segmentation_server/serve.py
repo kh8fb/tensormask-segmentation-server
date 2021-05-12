@@ -25,7 +25,7 @@ def run_model():
     """
     Obtain the gradients from running the specified model on the input image tensor.
     The outputs are saved as a gzipped dictionary with the keys:
-    integrated_gradients, integrated_directional_gradients, step_sizes, intermediates.
+    "pred_masks": torch.tensor(num_segmentations,height,width).
     """
     if request.method == 'POST':
         print(request)

@@ -1,5 +1,5 @@
 # tensormask-segmentation-server
-A cli-based server for obtaining [integrated directional gradients](https://github.com/kh8fb/intermediate-gradients) and [integrated gradients](https://arxiv.org/abs/1703.01365) from images using `curl` requests.
+A cli-based server for obtaining image segmentation prediction masks from images using `curl` requests using the [TensorMask](https://arxiv.org/pdf/1903.12174.pdf) state-of-the-art segmentation model.
 
 ### Installation
 
@@ -34,16 +34,19 @@ Alternatively, follow their instruction steps [here](https://detectron2.readthed
 
 Finally, `cd` into this project's directory and install the requirements with
 
+      cd tensormask-segmentation-server/
       pip install -e .
  
 Now your environment is set up and you're ready to go.
 
 ### Usage
+
 Activate the server directly from the command line with
 
 	 tensormask-server -tp /path/to/tensormask_model.pkl -cp /path/to/config_file.yaml
 
 This command starts the server and load the model so that it's ready to go when called upon.
+
 The pretrained and finetuned TensorMask model can be downloaded from this [Google drive folder]()
 
 You can provide additional arguments such as the hostname, port, and a cuda flag.
@@ -56,21 +59,22 @@ After the software has been started, run `curl` with the "model" filepath to get
 
 The `input_json_file.json` can be produced from an image with the script `prepare_input.py`. This will store the image as a JSON file of RGB values and the image can thus be passed to the server.
 
-    python prepare_input.py /path/to/image.jpeg input_json_file.json
+    python prepare_input.py /path/to/image.jpg input_json_file.json
 
 ### Interpreting Server Outputs
 
-The gradients are stored in a dictionary with the keys "integrated_grads", "integrated_directional_grads", "step_sizes", and "intermediates".  They are then compressed and able to be retrieved from the saved gzip file with:
+The prediction masks are stored in a dictionary with the key "pred_masks".  They are then compressed and able to be retrieved from the saved gzip file with:
 
       >>> import gzip
       >>> import torch
       >>> from io import BytesIO
       >>> with gzip.open("saved_file.gzip", 'rb') as fobj:
       >>>      x = BytesIO(fobj.read())
-      >>>      grad_dict = torch.load(x)
+      >>>      preds_dict = torch.load(x)
 
 
 ### Running on a remote server
+
 If you want to run int-grads-server on a remote server, you can specify the hostname to be 0.0.0.0 from the command line.  Then use the `hostname` command to find out which IP address the server is running on.
 
        tensormask-server -tb /path/to/tensormask.pkl -cp /path/to/config.yaml -h 0.0.0.0 -p 8008
@@ -83,6 +87,7 @@ The first hostname result tells you which address to use in your `curl` request.
 
 
 ### Model Results
+
 This trained TensorMask model received the following results
 
 | Dataset |   AP   |  AP50  |   APs  |   APm  |   APl  |
