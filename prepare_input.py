@@ -26,7 +26,7 @@ def convert_img_to_json(img_path, save_path):
     img_data = torch.tensor(im).permute(2,0,1) # Prepare for (C,H,W) Tensormask input
     
     json_dict = {
-        "img_data": list(image_data.numpy()),
+        "img_data": list(img_data.numpy()),
     }
     
     with open(save_path, "w") as fobj:
