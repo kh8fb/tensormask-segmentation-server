@@ -30,7 +30,7 @@ def prepare_input(img_array, device):
     }
     return input_dict
 
-def run_models(model_name, model, device, img):
+def run_models(model_name, model, device, img, threshold):
     """
     Run the model on the input image and return the tensor of prediction masks for image locations.
 
@@ -45,6 +45,8 @@ def run_models(model_name, model, device, img):
         Device that models are stored on.
     img: np.array(3,x,y)
         BGR array of the photo to obtain segmentation from.
+    threshold: float
+        Threshold to cut off image segmentation before.
     Returns
     -------
     preds_dict: dict
@@ -56,6 +58,14 @@ def run_models(model_name, model, device, img):
         with torch.no_grad():
             outputs = model([input_dict])
         pred_masks = outputs[0]['instances'].pred_masks.cpu()
+        scores = outputs[0]['instances'].scores.cpu() > threshold
+
+        tensor_list = []
+        for (i, entry) in enumerate(pred_masks):
+            if scores[i] > threshold:
+                tensor_list.append(entry)
+
+        pred_masks = torch.stack(tensor_list, dim=0)
         preds_dict = {"pred_masks": pred_masks}
 
     return preds_dict

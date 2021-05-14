@@ -19,6 +19,7 @@ from .run_models import run_models
 app = Flask(__name__)
 MODEL_DICT = {}
 DEVICE = None
+THRESHOLD = 0.5
 
 @app.route("/model/", methods=["POST"])
 def run_model():
@@ -38,7 +39,8 @@ def run_model():
         preds_dict = run_models(MODEL_DICT["model_name"],
                                 MODEL_DICT["model"],
                                 DEVICE,
-                                img)
+                                img,
+                                THRESHOLD)
 
         temp_bytes, temp_gzip = BytesIO(), BytesIO()
 
@@ -82,14 +84,26 @@ def run_model():
     help="Path to the model's configuration file.  Located in the tensormask_segmentation_server/configs folder.",
     default=None,
 )
+@click.option(
+    "--threshold",
+    "-t",
+    required=False,
+    help="",
+    default=0.5,
+)
 def serve(
         host,
         port,
         tensormask_path,
         configuration_path,
+        threshold=0.5,
 ):
-    global MODEL_DICT, DEVICE
+    global MODEL_DICT, DEVICE, THRESHOLD
 
+    if not (0 < float(threshold) < 1):
+        raise ValueError("Threshold must be between 0 and 1")
+    
+    THRESHOLD = float(threshold)
     DEVICE = torch.device("cuda:0")
     # TensorMask will always load inputs on this device
     try:
